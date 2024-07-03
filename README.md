@@ -27,6 +27,8 @@ git lfs install
 ```
 This is from the quick start guide: https://nvidia.github.io/TensorRT-LLM/quick-start-guide.html
 
+## Run the code
+
 Now that everything is installed, I need to follow a specific architecture. 
 ```
 mkdir model
@@ -40,7 +42,19 @@ cd ..
 
 And then you can clone this repository and run the following command 
 ```
-benchmark.py <model name>
+benchmark 
+```
+
+## Example
+
+An example with the model BigScience Large Open-science Open-access Multilingual Language Model Bloom-560m
+
+```
+mkdir model
+cd model
+git clone https://huggingface.co/bigscience/bloom-560m
+cd ..
+benchmark
 ```
 
 
