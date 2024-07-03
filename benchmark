@@ -4,6 +4,7 @@ import re
 import csv
 import sys
 import subprocess
+import argparse
 
 
 
@@ -107,12 +108,35 @@ def helper():
 def main():
     if sys.argv[1] == "help" or len(sys.argv) < 2:
         helper()
+    
+    # Add arguments
+     # Create the parser
+    parser = argparse.ArgumentParser(description='Benchmark models with optional flags.', add_help=False)
+    
+    # Add arguments
+    parser.add_argument('-h', '--help', action='store_true', help='Show this help message and exit')
+    parser.add_argument('-m', '--model', type=str, help='Name of the model to benchmark', required=True)
+    parser.add_argument('-b', '--benchmark', action='store_true', help='Benchmark only when engines are already created')
+
+    args = parser.parse_args()
+
+    # Check for help 
+    if args.help:
+        parser.print_help()
+        sys.exit(0)
+
+
+    model_name = args.model
+    MODEL_PATH = f"./../model"
+    MODEL = f"./../examples/{model_name}"
+    os.environ['MODEL_PATH'] = MODEL_PATH
+    os.environ['MODEL'] = MODEL
+    
+    if args.benchmark:
+        # Perform benchmarking only
+        benchmark_model()
     else:
-        model_name = sys.argv[1]
-        MODEL_PATH = f"./../model"
-        MODEL = f"./../examples/{model_name}"
-        os.environ['MODEL_PATH'] = MODEL_PATH
-        os.environ['MODEL'] = MODEL
+        # Full process
         convert_model_to_trt()
         convert_model_to_trt_and_quantify()
         build_engine()
