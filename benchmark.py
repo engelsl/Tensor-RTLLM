@@ -9,16 +9,16 @@ import subprocess
 
 # Define your commands
 commands = {
-    "HF-TRT": "python3 $MODEL_PATH/../convert_checkpoint.py --model_dir $MODEL_PATH/ --dtype float16 --output_dir $MODEL_PATH/trt_ckpt/",
-    "HF-TRT-Quantized": "python3 $MODEL_PATH/../convert_checkpoint.py --model_dir $MODEL_PATH/ --dtype float16 --use_weight_only --output_dir $MODEL_PATH/trt_ckpt/quantized/",
+    "HF-TRT": "python3 $MODEL/convert_checkpoint.py --model_dir $MODEL_PATH/ --dtype float16 --output_dir $MODEL_PATH/trt_ckpt/",
+    "HF-TRT-Quantized": "python3 $MODEL/convert_checkpoint.py --model_dir $MODEL_PATH/ --dtype float16 --use_weight_only --output_dir $MODEL_PATH/trt_ckpt/quantized/",
     "TRT-engine": "trtllm-build --checkpoint_dir $MODEL_PATH/trt_ckpt/ --gemm_plugin float16 --output_dir $MODEL_PATH/trt_engines/",
     "TRT-engine-Quantized": "trtllm-build --checkpoint_dir $MODEL_PATH/trt_ckpt/quantized/ --gemm_plugin float16 --output_dir $MODEL_PATH/trt_engines/quantized/"
 }
 
 commands_benchmark = {
-    "Hugging Face": "python3 $MODEL_PATH/../summarize.py --test_hf --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_PATH/trt_engines",
-    "TensorRT-LLM": "python3 $MODEL_PATH/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_PATH/trt_engines/",
-    "TensorRT-LLM (INT8)": "python3 $MODEL_PATH/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_PATH/trt_engines/quantized/"
+    "Hugging Face": "python3 $MODEL/../summarize.py --test_hf --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_PATH/trt_engines",
+    "TensorRT-LLM": "python3 $MODEL/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_PATH/trt_engines/",
+    "TensorRT-LLM (INT8)": "python3 $MODEL/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_PATH/trt_engines/quantized/"
 }
 
 # Choose the model you want to benchmark
@@ -89,28 +89,30 @@ def benchmark_model():
     ]
 
     # Write to CSV
-    with open("output.csv", "w", newline='') as csvfile:
+    with open("/TensorRT-LLM/output.csv", "w", newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(data)
 
 
 
 def helper():
-    print("""
-    Usage: benchmark.py <model name>
-    Example: benchmark.py bloom-560m
-    Model name is the one get after clone the model from huggingface (e.g. https://huggingface.co/bigscience/bloom-560m -> bloom-560m)
-
-          """
-          )
+    print(
+    """
+        Usage: benchmark.py <model name>
+        Example: benchmark.py bloom
+        To have more information please go check README at this link : https://github.com/engelsl/Tensor-RTLLM
+    """
+    )
 
 def main():
     if sys.argv[1] == "help" or len(sys.args) < 2:
         helper()
     else:
         model_name = sys.argv[1]
-        MODEL_PATH = f"./model/{model_name}"
+        MODEL_PATH = f"./../model"
+        MODEL = f"./../examples/{model_name}"
         os.environ['MODEL_PATH'] = MODEL_PATH
+        os.environ['MODEL'] = MODEL
         convert_model_to_trt()
         convert_model_to_trt_and_quantify()
         build_engine()
