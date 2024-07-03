@@ -55,7 +55,7 @@ mkdir model
 cd model
 git clone https://huggingface.co/bigscience/bloom-560m
 cd ..
-git@github.com:engelsl/Tensor-RTLLM.git
+git clone https://github.com/engelsl/Tensor-RTLLM.git
 cd Tensor-RTLLM
 benchmark bloom
 ```
