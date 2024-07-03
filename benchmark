@@ -99,9 +99,17 @@ def benchmark_model():
 def helper():
     print(
     """
-        Usage: benchmark.py <model name>
-        Example: benchmark.py bloom
-        To have more information please go check README at this link : https://github.com/engelsl/Tensor-RTLLM
+        Usage: benchmark.py -m <model name>
+        Example: benchmark.py -m bloom
+
+        -h    --help 
+        -m    --model  
+        -b    --benchmark
+
+
+        -m get the name of the tested model 
+        -b start benchmark only if engine is already created 
+        
     """
     )
 
