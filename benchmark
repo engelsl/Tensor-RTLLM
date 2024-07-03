@@ -78,6 +78,7 @@ def benchmark_model():
     results = {}
     for key, command in commands_benchmark.items():
         output = run_command(command)
+        print(output)
         results[key] = parse_output(output)
 
 
