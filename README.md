@@ -43,7 +43,7 @@ cd ..
 And then you can clone this repository and run the following command 
 Be sure that you have the right to execute the file 
 ```
-./benchmark -m <model name> -hf <clone model name>
+./benchmark -m <model name> -c <clone model name>
 ```
 Model name correspond to the model name inside the folder exmaples of Tensor RT-LLM project 
 
@@ -58,7 +58,7 @@ git clone https://huggingface.co/bigscience/bloom-560m
 cd ..
 git clone https://github.com/engelsl/Tensor-RTLLM.git
 cd Tensor-RTLLM
-./benchmark -m bloom -hf bloom-560m
+./benchmark -m bloom -c bloom-560m
 ```
 
 
