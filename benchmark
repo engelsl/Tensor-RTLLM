@@ -105,7 +105,7 @@ def helper():
     )
 
 def main():
-    if sys.argv[1] == "help" or len(sys.args) < 2:
+    if sys.argv[1] == "help" or len(sys.argv) < 2:
         helper()
     else:
         model_name = sys.argv[1]
