@@ -105,10 +105,12 @@ def helper():
         -h    --help 
         -m    --model  
         -b    --benchmark
+        -c    --huggingface
 
 
         -m get the name of the tested model 
         -b start benchmark only if engine is already created 
+        -c get the name of the hugging face model once it is clone 
         
     """
     )
@@ -125,6 +127,7 @@ def main():
     parser.add_argument('-h', '--help', action='store_true', help='Show this help message and exit')
     parser.add_argument('-m', '--model', type=str, help='Name of the model to benchmark', required=True)
     parser.add_argument('-b', '--benchmark', action='store_true', help='Benchmark only when engines are already created')
+     parser.add_argument('-c', '--huggingface', type=str, help='Name of the huggingface model', required=True)
 
     args = parser.parse_args()
 
@@ -135,7 +138,8 @@ def main():
 
 
     model_name = args.model
-    MODEL_PATH = f"./../model"
+    model_hf = args.huggingface
+    MODEL_PATH = f"./../model/{model_hf}"
     MODEL = f"./../examples/{model_name}"
     os.environ['MODEL_PATH'] = MODEL_PATH
     os.environ['MODEL'] = MODEL
