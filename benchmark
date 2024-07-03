@@ -127,7 +127,7 @@ def main():
     parser.add_argument('-h', '--help', action='store_true', help='Show this help message and exit')
     parser.add_argument('-m', '--model', type=str, help='Name of the model to benchmark', required=True)
     parser.add_argument('-b', '--benchmark', action='store_true', help='Benchmark only when engines are already created')
-     parser.add_argument('-c', '--huggingface', type=str, help='Name of the huggingface model', required=True)
+    parser.add_argument('-c', '--huggingface', type=str, help='Name of the huggingface model', required=True)
 
     args = parser.parse_args()
 
