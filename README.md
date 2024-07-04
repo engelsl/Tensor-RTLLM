@@ -1,5 +1,5 @@
 # Tensor-RTLLM
-This project aim to convert/build/benchmark with tensor RT LLM huggingface model with only one command
+This project aim to convert/build/benchmark with tensor RT LLM huggingface model with only one file
 
 ## Pre require
 ```
