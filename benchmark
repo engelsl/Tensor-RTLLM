@@ -132,8 +132,10 @@ def main():
 
     if len(sys.argv) <2:
         helper()
+        sys.exit(0)
     if sys.argv[1] == "help":
         helper()
+        sys.exit(0)
     
     # Add arguments
      # Create the parser
