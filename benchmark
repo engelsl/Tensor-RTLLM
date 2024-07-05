@@ -10,16 +10,16 @@ import argparse
 
 # Define your commands
 commands = {
-    "HF-TRT": "python3 $MODEL/convert_checkpoint.py --model_dir $MODEL_PATH/ --dtype float16 --output_dir $MODEL_PATH/trt_ckpt/",
-    "HF-TRT-Quantized": "python3 $MODEL/convert_checkpoint.py --model_dir $MODEL_PATH/ --dtype float16 --use_weight_only --output_dir $MODEL_PATH/trt_ckpt/quantized/",
-    "TRT-engine": "trtllm-build --checkpoint_dir $MODEL_PATH/trt_ckpt/ --gemm_plugin float16 --output_dir $MODEL_PATH/trt_engines/",
-    "TRT-engine-Quantized": "trtllm-build --checkpoint_dir $MODEL_PATH/trt_ckpt/quantized/ --gemm_plugin float16 --output_dir $MODEL_PATH/trt_engines/quantized/"
+    "HF-TRT": "python3 $MODEL/convert_checkpoint.py --model_dir $MODEL_PATH/ --dtype float16 --output_dir $MODEL_DIR/trt_ckpt/",
+    "HF-TRT-Quantized": "python3 $MODEL/convert_checkpoint.py --model_dir $MODEL_PATH/ --dtype float16 --use_weight_only --output_dir $MODEL_DIR/trt_ckpt/quantized/",
+    "TRT-engine": "trtllm-build --checkpoint_dir $MODEL_PATH/trt_ckpt/ --gemm_plugin float16 --output_dir $MODEL_DIR/trt_engines/",
+    "TRT-engine-Quantized": "trtllm-build --checkpoint_dir $MODEL_PATH/trt_ckpt/quantized/ --gemm_plugin float16 --output_dir $MODEL_DIR/trt_engines/quantized/"
 }
 
 commands_benchmark = {
-    "Hugging Face": "python3 $MODEL/../summarize.py --test_hf --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_PATH/trt_engines",
-    "TensorRT-LLM": "python3 $MODEL/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_PATH/trt_engines/",
-    "TensorRT-LLM (INT8)": "python3 $MODEL/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_PATH/trt_engines/quantized/"
+    "Hugging Face": "python3 $MODEL/../summarize.py --test_hf --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_DIR/trt_engines",
+    "TensorRT-LLM": "python3 $MODEL/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_DIR/trt_engines/",
+    "TensorRT-LLM (INT)": "python3 $MODEL/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_DIR/trt_engines/quantized/"
 }
 
 # Choose the model you want to benchmark
@@ -72,23 +72,31 @@ def parse_output(output):
     
     return exec_time, rouge_scores, latency, total_tokens, tokens_per_sec
 
-def benchmark_model():
+def benchmark_model(quantify : bool):
 
     # Run commands and parse outputs
     results = {}
     for key, command in commands_benchmark.items():
-        output = run_command(command)
-        print(output)
-        results[key] = parse_output(output)
+        if quantify:
+            output = run_command(command)
+            print(output)
+            results[key] = parse_output(output)
+        else: 
+            if key != "TensorRT-LLM (INT)":
+                output = run_command(command)
+                print(output)
+                results[key] = parse_output(output)
 
 
     # Prepare CSV data
     data = [
         ["Model", "Exec Time (s)", "ROUGE-1", "ROUGE-2", "ROUGE-L", "Latency (s)", "Total Tokens", "Tokens/s"],
         ["Hugging Face", results["Hugging Face"][0]] + results["Hugging Face"][1] + [None, None, None],
-        ["TensorRT-LLM", results["TensorRT-LLM"][0]] + results["TensorRT-LLM"][1] + [results["TensorRT-LLM"][2], results["TensorRT-LLM"][3], results["TensorRT-LLM"][4]],
-        ["TensorRT-LLM (INT8)", results["TensorRT-LLM (INT8)"][0]] + results["TensorRT-LLM (INT8)"][1] + [results["TensorRT-LLM (INT8)"][2], results["TensorRT-LLM (INT8)"][3], results["TensorRT-LLM (INT8)"][4]],
+        ["TensorRT-LLM", results["TensorRT-LLM"][0]] + results["TensorRT-LLM"][1] + [results["TensorRT-LLM"][2], results["TensorRT-LLM"][3], results["TensorRT-LLM"][4]]
     ]
+
+    if quantify:
+        data.append(["TensorRT-LLM (INT)", results["TensorRT-LLM (INT)"][0]] + results["TensorRT-LLM (INT)"][1] + [results["TensorRT-LLM (INT)"][2], results["TensorRT-LLM (INT)"][3], results["TensorRT-LLM (INT)"][4])
 
     # Write to CSV
     with open("/TensorRT-LLM/output.csv", "w", newline='') as csvfile:
@@ -107,16 +115,21 @@ def helper():
         -m    --model  
         -b    --benchmark
         -c    --huggingface
+        -q    --quantization
 
 
         -m get the name of the tested model 
         -b start benchmark only if engine is already created 
-        -c get the name of the hugging face model once it is clone 
+        -c get the name of the hugging face model once it is clone
+        -q quantification of the model to INT4 or INT8
         
     """
     )
 
 def main():
+
+    quabtification = False
+
     if sys.argv[1] == "help" or len(sys.argv) < 2:
         helper()
     
@@ -129,6 +142,7 @@ def main():
     parser.add_argument('-m', '--model', type=str, help='Name of the model to benchmark', required=True)
     parser.add_argument('-b', '--benchmark', action='store_true', help='Benchmark only when engines are already created')
     parser.add_argument('-c', '--huggingface', type=str, help='Name of the huggingface model', required=True)
+    parser.add_argument('-q', '--quantification', action='store_true', help='Quantification of the model to INT4 or INT8')
 
     args = parser.parse_args()
 
@@ -137,13 +151,21 @@ def main():
         parser.print_help()
         sys.exit(0)
 
+    if args.quantification:
+        quantification = True
+
 
     model_name = args.model
     model_hf = args.huggingface
     MODEL_PATH = f"./../model/{model_hf}"
     MODEL = f"./../examples/{model_name}"
+    MODEL_DIR = f"./../model"
+    print(f"Model path: {MODEL_PATH}")
+    print(f"Model: {MODEL}")
+    print(f"Model dir: {MODEL_DIR}")
     os.environ['MODEL_PATH'] = MODEL_PATH
     os.environ['MODEL'] = MODEL
+    os.environ['MODEL_DIR'] = MODEL_DIR
     
     if args.benchmark:
         # Perform benchmarking only
@@ -154,7 +176,7 @@ def main():
         convert_model_to_trt_and_quantify()
         build_engine()
         build_engine_quantized()
-        benchmark_model()
+        benchmark_model(quantification)
 
 if __name__ == "__main__":
     main()
