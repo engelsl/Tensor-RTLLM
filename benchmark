@@ -12,8 +12,8 @@ import argparse
 commands = {
     "HF-TRT": "python3 $MODEL/convert_checkpoint.py --model_dir $MODEL_PATH/ --dtype float16 --output_dir $MODEL_DIR/trt_ckpt/",
     "HF-TRT-Quantized": "python3 $MODEL/convert_checkpoint.py --model_dir $MODEL_PATH/ --dtype float16 --use_weight_only --output_dir $MODEL_DIR/trt_ckpt/quantized/",
-    "TRT-engine": "trtllm-build --checkpoint_dir $MODEL_PATH/trt_ckpt/ --gemm_plugin float16 --output_dir $MODEL_DIR/trt_engines/",
-    "TRT-engine-Quantized": "trtllm-build --checkpoint_dir $MODEL_PATH/trt_ckpt/quantized/ --gemm_plugin float16 --output_dir $MODEL_DIR/trt_engines/quantized/"
+    "TRT-engine": "trtllm-build --checkpoint_dir $MODEL_DIR/trt_ckpt/ --gemm_plugin float16 --output_dir $MODEL_DIR/trt_engines/",
+    "TRT-engine-Quantized": "trtllm-build --checkpoint_dir $MODEL_DIR/trt_ckpt/quantized/ --gemm_plugin float16 --output_dir $MODEL_DIR/trt_engines/quantized/"
 }
 
 commands_benchmark = {
