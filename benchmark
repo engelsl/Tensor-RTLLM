@@ -174,9 +174,9 @@ def main():
 
     model_name = args.model
     model_hf = args.huggingface
-    MODEL_PATH = f"./../model/{model_hf}"
-    MODEL = f"./../examples/{model_name}"
-    MODEL_DIR = f"./../model"
+    MODEL_PATH = f"../model/{model_hf}"
+    MODEL = f"../examples/{model_name}"
+    MODEL_DIR = f"../model"
     print(f"Model path: {MODEL_PATH}")
     print(f"Model: {MODEL}")
     print(f"Model dir: {MODEL_DIR}")
