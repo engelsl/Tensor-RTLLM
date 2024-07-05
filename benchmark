@@ -152,7 +152,8 @@ def main():
 
     # Check for help 
     if args.help:
-        helper()
+        parser.print_help()
+        print("If you want more explanation about the arguments, please run './benchmark.py help'")
         sys.exit(0)
 
     if args.quantification:
