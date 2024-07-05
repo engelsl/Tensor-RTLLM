@@ -186,7 +186,7 @@ def main():
     
     if args.benchmark:
         # Perform benchmarking only
-        benchmark_model()
+        benchmark_model(quantification)
     else:
         # Full process
         convert_model_to_trt()
