@@ -130,7 +130,9 @@ def main():
 
     quabtification = False
 
-    if sys.argv[1] == "help" or len(sys.argv) < 2:
+    if len(sys.argv) <2:
+        helper()
+    if sys.argv[1] == "help":
         helper()
     
     # Add arguments
