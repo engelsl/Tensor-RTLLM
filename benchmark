@@ -30,23 +30,27 @@ def convert_model_to_trt():
     keys = "HF-TRT"
     run_command(commands[keys])
     print("==================== Model converted to tensor checkpoint ====================")
+    print()
 
 
 def convert_model_to_trt_and_quantify():
     keys = "HF-TRT-Quantized"
     run_command(commands[keys])
     print("==================== Model converted to tensor checkpoint and quantized to INT ====================")
+    print()
 
 
 def build_engine():
     keys = "TRT-engine"
     run_command(commands[keys])
     print("==================== Engine create ====================")
+    print()
 
 def build_engine_quantized():
     keys = "TRT-engine-Quantized"
     run_command(commands[keys])
     print("==================== Engine create for quantized tensor ====================")
+    print()
 
 
 def run_command(command):
@@ -80,6 +84,7 @@ def parse_output(output):
 def benchmark_model(quantify : bool):
 
     print("==================== Benchmark in progress ====================")
+    print()
     # Run commands and parse outputs
     results = {}
     for key, command in commands_benchmark.items():
@@ -108,7 +113,7 @@ def benchmark_model(quantify : bool):
         writer = csv.writer(csvfile)
         writer.writerows(data)
 
-    print("==================== Benchmark done ====================")
+    print("==================== Benchmark done results saved at /TensorRT-LLM/output.csv ====================")
 
 
 
