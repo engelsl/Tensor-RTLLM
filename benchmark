@@ -189,6 +189,7 @@ def main():
         benchmark_model(quantification)
     else:
         # Full process
+        subprocess.run("pip install -r $MODEL/requirements.txt", shell=True, capture_output=True, text=True)
         convert_model_to_trt()
         build_engine()
         if quantification == True:
