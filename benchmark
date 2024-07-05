@@ -29,19 +29,24 @@ commands_benchmark = {
 def convert_model_to_trt():
     keys = "HF-TRT"
     run_command(commands[keys])
+    print("==================== Model converted to tensor checkpoint ====================")
 
 
 def convert_model_to_trt_and_quantify():
     keys = "HF-TRT-Quantized"
     run_command(commands[keys])
+    print("==================== Model converted to tensor checkpoint and quantized to INT ====================")
+
 
 def build_engine():
     keys = "TRT-engine"
     run_command(commands[keys])
+    print("==================== Engine create ====================")
 
 def build_engine_quantized():
     keys = "TRT-engine-Quantized"
     run_command(commands[keys])
+    print("==================== Engine create for quantized tensor ====================")
 
 
 def run_command(command):
@@ -74,6 +79,7 @@ def parse_output(output):
 
 def benchmark_model(quantify : bool):
 
+    print("==================== Benchmark in progress ====================")
     # Run commands and parse outputs
     results = {}
     for key, command in commands_benchmark.items():
@@ -86,7 +92,6 @@ def benchmark_model(quantify : bool):
                 output = run_command(command)
                 print(output)
                 results[key] = parse_output(output)
-
 
     # Prepare CSV data
     data = [
@@ -102,6 +107,8 @@ def benchmark_model(quantify : bool):
     with open("/TensorRT-LLM/output.csv", "w", newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(data)
+
+    print("==================== Benchmark done ====================")
 
 
 
@@ -128,7 +135,7 @@ def helper():
 
 def main():
 
-    quabtification = False
+    quantification = False
 
     if len(sys.argv) <2:
         helper()
@@ -178,9 +185,11 @@ def main():
     else:
         # Full process
         convert_model_to_trt()
-        convert_model_to_trt_and_quantify()
         build_engine()
-        build_engine_quantized()
+        if quantification == True:
+            convert_model_to_trt_and_quantify()
+            build_engine_quantized()
+        
         benchmark_model(quantification)
 
 if __name__ == "__main__":
