@@ -108,8 +108,8 @@ def benchmark_model(quantify : bool):
 def helper():
     print(
     """
-        Usage: benchmark.py -m <model name>
-        Example: benchmark.py -m bloom
+        Usage: benchmark.py -m <model name> -c <clone model name>
+        Example: benchmark.py -m bloom -c bloom-560m
 
         -h    --help 
         -m    --model  
@@ -150,7 +150,7 @@ def main():
 
     # Check for help 
     if args.help:
-        parser.print_help()
+        helper()
         sys.exit(0)
 
     if args.quantification:
