@@ -123,7 +123,7 @@ def benchmark_model(quantify : bool):
         data.append(["TensorRT-LLM (INT)"] + results["TensorRT-LLM (INT)"][1] + [results["TensorRT-LLM (INT)"][2], results["TensorRT-LLM (INT)"][3], results["TensorRT-LLM (INT)"][4]])
 
     # Write to CSV
-    with open("/TensorRT-LLM/output.csv", "w", newline='') as csvfile:
+    with open("../output.csv", "w", newline='') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerows(data)
 
