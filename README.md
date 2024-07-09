@@ -49,9 +49,9 @@ Model name correspond to the model name inside the folder examples of Tensor RT-
 
 ## Output
 
-If everything runs correctly, the result should be a csv file in the root of the container. 
+If everything runs correctly, the result should be a csv file. 
 ```
-cat /output.csv
+cat /TensorRT-LLM/output.csv
 ```
 
 ## Example
