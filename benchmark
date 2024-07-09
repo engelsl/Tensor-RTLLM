@@ -17,9 +17,9 @@ commands = {
 }
 
 commands_benchmark = {
-    "Hugging Face": "time python3 $MODEL/../summarize.py --test_hf --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_DIR/trt_engines",
-    "TensorRT-LLM": "time python3 $MODEL/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_DIR/trt_engines/",
-    "TensorRT-LLM (INT)": "time python3 $MODEL/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_DIR/trt_engines/quantized/"
+    "Hugging Face": "python3 $MODEL/../summarize.py --test_hf --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_DIR/trt_engines",
+    "TensorRT-LLM": "python3 $MODEL/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_DIR/trt_engines/",
+    "TensorRT-LLM (INT)": "python3 $MODEL/../summarize.py --test_trt_llm --hf_model_dir $MODEL_PATH/ --data_type fp16 --engine_dir $MODEL_DIR/trt_engines/quantized/"
 }
 
 # Choose the model you want to benchmark
