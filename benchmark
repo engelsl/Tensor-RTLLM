@@ -115,7 +115,7 @@ def benchmark_model(quantify : bool):
     # Prepare CSV data
     data = [
         ["Model", "Exec Time (s)", "ROUGE-1", "ROUGE-2", "ROUGE-L", "Latency (s)", "Total Tokens", "Tokens/s"],
-        ["Hugging Face", results["Hugging Face"][0]] + results["Hugging Face"][1] + [None, None, None],
+        ["Hugging Face", results["Hugging Face"][0]] + results["Hugging Face"][1] + [results["Hugging Face"][2], results["Hugging Face"][3], results["Hugging Face"][4]],
         ["TensorRT-LLM", results["TensorRT-LLM"][0]] + results["TensorRT-LLM"][1] + [results["TensorRT-LLM"][2], results["TensorRT-LLM"][3], results["TensorRT-LLM"][4]]
     ]
 
