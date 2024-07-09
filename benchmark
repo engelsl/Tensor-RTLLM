@@ -54,8 +54,20 @@ def build_engine_quantized():
 
 
 def run_command(command):
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)
-    return result.stdout
+    try:
+        # Execute the command
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, check=True)
+        
+        # Decode the output and error from bytes to string
+        output = result.stdout.decode('utf-8')
+        error = result.stderr.decode('utf-8')
+        
+        if error:
+            print(f"Error executing command: {error}")
+        return output
+    except subprocess.CalledProcessError as e:
+        print(f"Command '{command}' failed with return code {e.returncode}")
+        return ""
 
 def parse_output(output):
     # Extracting execution time
@@ -94,6 +106,8 @@ def benchmark_model(quantify : bool):
             results[key] = parse_output(output)
         else: 
             if key != "TensorRT-LLM (INT)":
+                print("Benchmark")
+                print(command)
                 output = run_command(command)
                 print(output)
                 results[key] = parse_output(output)
