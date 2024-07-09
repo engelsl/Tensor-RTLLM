@@ -13,7 +13,7 @@ apt-get update && apt-get -y install python3.10 python3-pip openmpi-bin libopenm
 # Install the latest preview version (corresponding to the main branch) of TensorRT-LLM.
 # If you want to install the stable version (corresponding to the release branch), please
 # remove the `--pre` option.
-pip3 install tensorrt_llm -U --pre --extra-index-url https://pypi.nvidia.com
+pip3 install tensorrt_llm -U --extra-index-url https://pypi.nvidia.com
 
 # Check installation
 python3 -c "import tensorrt_llm"
