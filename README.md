@@ -56,7 +56,7 @@ cat /TensorRT-LLM/output.csv
 
 To copy results into your machine run the following command from the host machine.
 ```
-docker cp <ID container> <path to file in container> <path where to store file in host machine>
+docker cp <ID container>:<path to file in container> <path where to store file in host machine>
 docker cp container_id:/foo.txt foo.txt
 ```
 
