@@ -47,6 +47,13 @@ Be sure that you have the right to execute the file
 ```
 Model name correspond to the model name inside the folder examples of Tensor RT-LLM project and clone model name correspond to the name after the clonning model from hugging face
 
+## Output
+
+If everything runs correctly, the result should be a csv file in the root of the container. 
+```
+cat /output.csv
+```
+
 ## Example
 
 An example with the model BigScience Large Open-science Open-access Multilingual Language Model Bloom-560m
