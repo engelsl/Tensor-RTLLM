@@ -54,6 +54,11 @@ If everything runs correctly, the result should be a csv file.
 cat /TensorRT-LLM/output.csv
 ```
 
+To copy results into your machine run the following command from the host machine.
+```
+docker cp <ID container> <path to file in container> <path where to store file in host machine>
+```
+
 ## Example
 
 An example with the model BigScience Large Open-science Open-access Multilingual Language Model Bloom-560m
