@@ -45,7 +45,7 @@ Be sure that you have the right to execute the file
 ```
 ./benchmark -m <model name> -c <clone model name>
 ```
-Model name correspond to the model name inside the folder exmaples of Tensor RT-LLM project 
+Model name correspond to the model name inside the folder examples of Tensor RT-LLM project and clone model name correspond to the name after the clonning model from hugging face
 
 ## Example
 
